@@ -1,0 +1,48 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: flight-vortech
+  datasource:
+    url: jdbc:h2:file:~/flight
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        generate_statistics: false
+        type: trace
+        stat: debug
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  sql:
+    init:
+      mode: always
+  rabbitmq:
+    host: localhost
+    virtualhost: /
+    port: 15672
+    username: user
+    password: password
+    exchange: rabbitmq.exchange
+    routingkey: rabbitmq.routingkey
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 5
+          initial-interval: 1000
+
+springdoc:
+  api-docs:
+    enabled: true
