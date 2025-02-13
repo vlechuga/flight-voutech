@@ -10,15 +10,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "token")
-public final class Token {
+@Entity
+@Table(name = "token")
+public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "token_id")
     private Integer id;
 
-    @Column(name = "token", unique = true)
+    @Column(name = "token_x", unique = true)
     private String token;
 
     @Column(name = "token_type")
@@ -26,10 +27,10 @@ public final class Token {
     private TokenType tokenType = TokenType.BEARER;
 
     @Column(name = "revoked", nullable = false)
-    private Boolean isRevoked;
+    private boolean revoked;
 
     @Column(name = "expired", nullable = false)
-    private Boolean isExpired;
+    private boolean expired;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", updatable = false)

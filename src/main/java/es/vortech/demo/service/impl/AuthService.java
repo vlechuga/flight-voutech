@@ -59,11 +59,11 @@ public class AuthService {
 
     private void saveUserToken(User user, String jwtToken) {
         final Token token = Token.builder()
-                .user(user)
+                //.user(user)
                 .token(jwtToken)
                 .tokenType(Token.TokenType.BEARER)
-                .isExpired(false)
-                .isRevoked(false)
+                .expired(false)
+                .revoked(false)
                 .build();
         tokenRepository.save(token);
     }
@@ -72,8 +72,8 @@ public class AuthService {
         final List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
         if (!validUserTokens.isEmpty()) {
             validUserTokens.forEach(token -> {
-                token.setIsExpired(true);
-                token.setIsRevoked(true);
+                token.setExpired(true);
+                token.setRevoked(true);
             });
             tokenRepository.saveAll(validUserTokens);
         }

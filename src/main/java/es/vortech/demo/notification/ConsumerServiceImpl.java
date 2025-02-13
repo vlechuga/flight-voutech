@@ -20,21 +20,21 @@ public class ConsumerServiceImpl implements ConsumerService {
     @Override
     @RabbitListener(queues = {RabbitMQConfig.QUEUE_REJECTED_RESERVATION})
     public void doReceiveRejectedReservation(@Payload RequestDto message) {
-        log.info("************ REJECTED RESERVATION. SEND EMAIL ***********");
+        log.info("************ REJECTED RESERVATION. SEND EMAIL ***********" + Thread.currentThread().getName());
         log.info(message.toString());
     }
 
     @Override
     @RabbitListener(queues = {RabbitMQConfig.QUEUE_CONFIRMED_RESERVATION})
     public void doReceiveConfirmedReservation(@Payload ReservationDto message) {
-        log.info("************ CONFIRMED RESERVATION. SEND EMAIL ***********");
+        log.info("************ CONFIRMED RESERVATION. SEND EMAIL ***********" + Thread.currentThread().getName());
         log.info(message.toString());
     }
 
     @Override
     @RabbitListener(queues = {RabbitMQConfig.QUEUE_RESERVATION})
     public void doReceiveReservationRequest(@Payload RequestDto requestDto) {
-        log.info("************ PROCESSING RESERVATION ***********");
+        log.info("************ PROCESSING RESERVATION ***********" + Thread.currentThread().getName());
         try {
             reservationService.processReservation(requestDto);
         } catch (Exception ex) {

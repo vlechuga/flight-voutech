@@ -39,7 +39,7 @@ spring:
     host: localhost
     virtualhost: /
     port: 15672
-    username: usersynchronized
+    username: user
     password: password
     exchange: rabbitmq.exchange
     routingkey: rabbitmq.routingkey

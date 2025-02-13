@@ -43,6 +43,7 @@ public class SeatServiceImpl implements SeatService {
     })
     public void updateAvailable(Seat seat, boolean available) {
         seatRepository.updateAvailable(seat.getSeatId(), available);
+        seatRepository.flush();
     }
 
     @Override
@@ -52,6 +53,7 @@ public class SeatServiceImpl implements SeatService {
     })
     public void save(Seat seat) {
         seatRepository.save(seat);
+        seatRepository.flush();
     }
 
     @Override

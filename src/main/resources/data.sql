@@ -1,4 +1,8 @@
 
+INSERT INTO users (user_id, user_name, user_email, user_password)
+VALUES (100000, 'Vitor', 'vlechugamsc@gmail.com', '$2a$10$5VZRLGkLmvYjBPEPVokzfeB7RJo1CisyleOdB8AF6I3FzKSj8YJBu');
+
+
 INSERT INTO flight (flight_id, flight_code)
 VALUES
     (100000, 'ABC-01'),

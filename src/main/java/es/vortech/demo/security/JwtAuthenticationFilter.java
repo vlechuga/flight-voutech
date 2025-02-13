@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Optional;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -37,28 +38,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains("/api/v1/auth")) {
+        if (request.getServletPath().contains("/api/v1/auth") ) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+        if (request.getCookies().length == 0) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return;
         }
 
-        final String jwt = authHeader.substring(7);
+        final String jwt = request.getCookies()[0].getValue();
+        if (jwt == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return;
+        }
+
+        //final String jwt = authCookies.substring(7);
         final String userEmail = jwtService.extractUsername(jwt);
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (userEmail == null || authentication != null) {
-            filterChain.doFilter(request, response);
+        //final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (userEmail == null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return;
         }
 
         final UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
         final boolean isTokenExpiredOrRevoked = tokenRepository.findByToken(jwt)
-                .map(token -> !token.getIsExpired() && !token.getIsRevoked())
+                .map(token -> !token.isExpired() && !token.isRevoked())
                 .orElse(false);
 
 

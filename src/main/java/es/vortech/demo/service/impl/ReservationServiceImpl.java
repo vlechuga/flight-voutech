@@ -112,6 +112,4 @@ public class ReservationServiceImpl implements ReservationService {
     private void doSendConfirmedReservationMessage(ReservationDto reservationDto) {
         publishService.doSendConfirmedReservation(reservationDto);
     }
-
-
 }

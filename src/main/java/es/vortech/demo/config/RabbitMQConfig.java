@@ -103,6 +103,8 @@ public class RabbitMQConfig {
         factory.setConnectionFactory(connectionFactory());
         factory.setMessageConverter(jsonMessageConverter());
         factory.setErrorHandler(errorHandler());
+        factory.setConcurrentConsumers(5);
+        factory.setMaxConcurrentConsumers(10);
         return factory;
     }
 
